@@ -2,11 +2,13 @@ package com.example.schedulemanager.repository;
 
 import com.example.schedulemanager.dto.ScheduleResponseDto;
 import com.example.schedulemanager.entity.Schedule;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -41,6 +43,7 @@ public class JdbcScheduleRepository implements ScheduleRepository{
 
     }
 
+    //TODO 메소드로 따로 빼기
     @Override
     public List<ScheduleResponseDto> findAllSchedule(LocalDateTime updatedDate,String username) {
         String sql ="select * from schedule where 1=1";
@@ -66,6 +69,13 @@ public class JdbcScheduleRepository implements ScheduleRepository{
     public Optional<Schedule> findScheduleById(Long id) {
         List<Schedule> result = jdbcTemplate.query("select * from schedule where id = ?", scheduleRowMapperV2(), id);
         return result.stream().findAny();
+    }
+
+    @Override
+    public ScheduleResponseDto updateSchedule(Long id, String username, String contents,LocalDateTime updatedDate) {
+        String sql = "update schedule set username= ?, contents = ?, updated_date = ? where id = ?";
+        jdbcTemplate.update(sql,username,contents,updatedDate,id);
+        return new ScheduleResponseDto(findScheduleById(id).get());
     }
 
     private RowMapper<ScheduleResponseDto> scheduleRowMapper() {

@@ -10,4 +10,5 @@ public interface ScheduleService {
     ScheduleResponseDto saveSchedule(ScheduleRequestDto scheduleRequestDto);
     List<ScheduleResponseDto> findAllSchedule(LocalDateTime updatedDate,String username);
     ScheduleResponseDto findScheduleById(Long id);
+    ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto);
 }

@@ -21,6 +21,7 @@ public class ScheduleServiceImpl implements ScheduleService{
         this.scheduleRepository = scheduleRepository;
     }
 
+
     @Override
     public ScheduleResponseDto saveSchedule(ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = new Schedule(scheduleRequestDto.getUsername(),scheduleRequestDto.getPassword(),scheduleRequestDto.getContents());
@@ -35,12 +36,28 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public ScheduleResponseDto findScheduleById(Long id) {
+        Optional<Schedule> optionalSchedule = getOptionalSchedule(id);
+        return new ScheduleResponseDto(optionalSchedule.get());
+    }
+
+    @Override
+    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+        Schedule schedule = getOptionalSchedule(id).get();
+        System.out.println(schedule.getPassword());
+        System.out.println(scheduleRequestDto.getPassword());
+        if(!schedule.getPassword().equals(scheduleRequestDto.getPassword())) {
+            throw new IllegalArgumentException("비밀번호 불일치");
+        }
+        LocalDateTime updatedDate = LocalDateTime.now();
+        return scheduleRepository.updateSchedule(id, scheduleRequestDto.getUsername(),scheduleRequestDto.getContents(),updatedDate);
+    }
+
+    private Optional<Schedule> getOptionalSchedule(Long id) {
         Optional<Schedule> optionalSchedule = scheduleRepository.findScheduleById(id);
 
         if(optionalSchedule.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Does not exist id = " + id);
         }
-
-        return new ScheduleResponseDto(optionalSchedule.get());
+        return optionalSchedule;
     }
 }
