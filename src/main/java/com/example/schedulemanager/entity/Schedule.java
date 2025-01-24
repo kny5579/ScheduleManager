@@ -23,4 +23,14 @@ public class Schedule {
         this.createdDate = LocalDateTime.now();
         this.updatedDate = LocalDateTime.now();
     }
+
+
+    public Schedule(Long id, String username, String password, String contents) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.contents = contents;
+        this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
+    }
 }
