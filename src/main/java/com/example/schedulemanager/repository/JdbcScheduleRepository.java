@@ -78,6 +78,11 @@ public class JdbcScheduleRepository implements ScheduleRepository{
         return new ScheduleResponseDto(findScheduleById(id).get());
     }
 
+    @Override
+    public int deleteSchedule(Long id) {
+        return jdbcTemplate.update("delete from schedule where id = ?",id);
+    }
+
     private RowMapper<ScheduleResponseDto> scheduleRowMapper() {
         return new RowMapper<ScheduleResponseDto>() {
             @Override

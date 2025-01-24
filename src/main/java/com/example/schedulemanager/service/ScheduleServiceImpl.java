@@ -21,7 +21,6 @@ public class ScheduleServiceImpl implements ScheduleService{
         this.scheduleRepository = scheduleRepository;
     }
 
-
     @Override
     public ScheduleResponseDto saveSchedule(ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = new Schedule(scheduleRequestDto.getUsername(),scheduleRequestDto.getPassword(),scheduleRequestDto.getContents());
@@ -49,6 +48,13 @@ public class ScheduleServiceImpl implements ScheduleService{
         LocalDateTime updatedDate = LocalDateTime.now();
         return scheduleRepository.updateSchedule(id, scheduleRequestDto.getUsername(),scheduleRequestDto.getContents(),updatedDate);
     }
+
+    @Override
+    public void deleteSchedule(Long id) {
+        Schedule schedule = getOptionalSchedule(id).get();
+        if(scheduleRepository.deleteSchedule(id)==0) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"삭제 불가");
+    }
+
 
     private Optional<Schedule> getOptionalSchedule(Long id) {
         Optional<Schedule> optionalSchedule = scheduleRepository.findScheduleById(id);
