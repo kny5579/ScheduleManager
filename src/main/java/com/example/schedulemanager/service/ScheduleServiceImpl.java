@@ -43,8 +43,6 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = getOptionalSchedule(id).get();
-        System.out.println(schedule.getPassword());
-        System.out.println(scheduleRequestDto.getPassword());
         if(!schedule.getPassword().equals(scheduleRequestDto.getPassword())) {
             throw new IllegalArgumentException("비밀번호 불일치");
         }
