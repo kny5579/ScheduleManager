@@ -1,7 +1,7 @@
-package com.example.schedulemanager.service;
+package com.example.schedulemanager.service.schedule;
 
-import com.example.schedulemanager.dto.ScheduleRequestDto;
-import com.example.schedulemanager.dto.ScheduleResponseDto;
+import com.example.schedulemanager.dto.Schedule.ScheduleRequestDto;
+import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

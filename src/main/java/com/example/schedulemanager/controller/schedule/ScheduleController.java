@@ -1,9 +1,9 @@
-package com.example.schedulemanager.controller;
+package com.example.schedulemanager.controller.schedule;
 
 
-import com.example.schedulemanager.dto.ScheduleRequestDto;
-import com.example.schedulemanager.dto.ScheduleResponseDto;
-import com.example.schedulemanager.service.ScheduleService;
+import com.example.schedulemanager.dto.Schedule.ScheduleRequestDto;
+import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
+import com.example.schedulemanager.service.schedule.ScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

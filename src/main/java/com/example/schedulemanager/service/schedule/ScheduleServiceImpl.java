@@ -1,9 +1,9 @@
-package com.example.schedulemanager.service;
+package com.example.schedulemanager.service.schedule;
 
-import com.example.schedulemanager.dto.ScheduleRequestDto;
-import com.example.schedulemanager.dto.ScheduleResponseDto;
+import com.example.schedulemanager.dto.Schedule.ScheduleRequestDto;
+import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
 import com.example.schedulemanager.entity.Schedule;
-import com.example.schedulemanager.repository.ScheduleRepository;
+import com.example.schedulemanager.repository.schedule.ScheduleRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
