@@ -26,17 +26,12 @@ public class ScheduleController {
         return new ResponseEntity<>(scheduleService.saveSchedule(scheduleRequestDto), HttpStatus.CREATED);
     }
 
-    //TODO 메소드로 따로 빼기
     @GetMapping("/find")
     public List<ScheduleResponseDto> findAllSchedule(
             @RequestParam(value = "updatedDate", required = false) String updatedStringDate,
             @RequestParam(value = "username", required = false) String username
     ) {
-        LocalDateTime updatedDate = null;
-        if (updatedStringDate != null && !updatedStringDate.isEmpty()) {
-            updatedDate = LocalDateTime.parse(updatedStringDate + "T00:00:00");
-        }
-        return scheduleService.findAllSchedule(updatedDate, username);
+        return scheduleService.findAllSchedule(getLocalDateTime(updatedStringDate), username);
     }
 
     @GetMapping("/{id}")
@@ -52,7 +47,15 @@ public class ScheduleController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto scheduleRequestDto) {
         scheduleService.deleteSchedule(id, scheduleRequestDto);
-        return new ResponseEntity<>("삭제되었습니다.",HttpStatus.OK);
+        return new ResponseEntity<>("삭제되었습니다.", HttpStatus.OK);
     }
 
+    private LocalDateTime getLocalDateTime(String updatedStringDate) {
+        //param으로 들어온 날짜를 데이터 타입에 맞게 파싱
+        LocalDateTime updatedDate = null;
+        if (updatedStringDate != null && !updatedStringDate.isEmpty()) {
+            updatedDate = LocalDateTime.parse(updatedStringDate + "T00:00:00");
+        }
+        return updatedDate;
+    }
 }
