@@ -10,10 +10,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class ScheduleServiceImpl implements ScheduleService{
+public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
@@ -23,48 +22,51 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public ScheduleResponseDto saveSchedule(ScheduleRequestDto scheduleRequestDto) {
-        Schedule schedule = new Schedule(scheduleRequestDto.getUsername(),scheduleRequestDto.getPassword(),scheduleRequestDto.getContents());
-
+        Schedule schedule = new Schedule(
+                scheduleRequestDto.getUsername(),
+                scheduleRequestDto.getPassword(),
+                scheduleRequestDto.getContents());
         return scheduleRepository.saveSchedule(schedule);
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedule(LocalDateTime updatedDate,String username) {
-        return scheduleRepository.findAllSchedule(updatedDate,username);
+    public List<ScheduleResponseDto> findAllSchedule(LocalDateTime updatedDate, String username) {
+        return scheduleRepository.findAllSchedule(updatedDate, username);
     }
 
     @Override
     public ScheduleResponseDto findScheduleById(Long id) {
-        Optional<Schedule> optionalSchedule = getOptionalSchedule(id);
-        return new ScheduleResponseDto(optionalSchedule.get());
+        return scheduleRepository.findScheduleById(id)
+                .map(ScheduleResponseDto::new)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "id 불일치: " + id));
     }
 
     @Override
     public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
-        Schedule schedule = getOptionalSchedule(id).get();
-        if(!schedule.getPassword().equals(scheduleRequestDto.getPassword())) {
-            throw new IllegalArgumentException("비밀번호 불일치");
-        }
+        checkPasswordMatch(getScheduleById(id), scheduleRequestDto.getPassword());
         LocalDateTime updatedDate = LocalDateTime.now();
-        return scheduleRepository.updateSchedule(id, scheduleRequestDto.getUsername(),scheduleRequestDto.getContents(),updatedDate);
+        return scheduleRepository.updateSchedule(
+                id,
+                scheduleRequestDto.getUsername(),
+                scheduleRequestDto.getContents(),
+                updatedDate);
     }
 
     @Override
-    public void deleteSchedule(Long id, String password) {
-        Schedule schedule = getOptionalSchedule(id).get();
-        if(!schedule.getPassword().equals(password)) {
-            throw new IllegalArgumentException("비밀번호 불일치");
-        }
-        if(scheduleRepository.deleteSchedule(id)==0) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"삭제 불가");
+    public void deleteSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+        checkPasswordMatch(getScheduleById(id), scheduleRequestDto.getPassword());
+        if (scheduleRepository.deleteSchedule(id) == 0)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "삭제 불가");
     }
 
+    private Schedule getScheduleById(Long id) {
+        return scheduleRepository.findScheduleById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "id 불일치: " + id));
+    }
 
-    private Optional<Schedule> getOptionalSchedule(Long id) {
-        Optional<Schedule> optionalSchedule = scheduleRepository.findScheduleById(id);
-
-        if(optionalSchedule.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Does not exist id = " + id);
+    private void checkPasswordMatch(Schedule schedule, String password) {
+        if (!schedule.getPassword().equals(password)) {
+            throw new IllegalArgumentException("비밀번호 불일치");
         }
-        return optionalSchedule;
     }
 }
