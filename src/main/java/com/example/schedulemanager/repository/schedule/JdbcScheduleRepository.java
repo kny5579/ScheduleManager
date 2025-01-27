@@ -58,7 +58,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
             sql += " AND DATE(updated_date) = ?";
             parameters.add(updatedDate);
         }
-        if (authorId != null && authorId>0) {
+        if (authorId != null && authorId > 0) {
             sql += " AND author_id = ?";
             parameters.add(authorId);
         }

@@ -6,8 +6,10 @@ import com.example.schedulemanager.entity.Author;
 import com.example.schedulemanager.repository.author.AuthorRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
-public class AuthorServiceImpl implements AuthorService{
+public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
 
@@ -23,4 +25,15 @@ public class AuthorServiceImpl implements AuthorService{
         );
         return authorRepository.saveAuthor(author);
     }
+
+    @Override
+    public AuthorResponseDto updateAuthor(Long id, AuthorRequestDto authorRequestDto) {
+        LocalDateTime updatedDate = LocalDateTime.now();
+        return authorRepository.updateAuthor(
+                id,
+                authorRequestDto.getUsername(),
+                authorRequestDto.getEmail(),
+                updatedDate);
+    }
+
 }
