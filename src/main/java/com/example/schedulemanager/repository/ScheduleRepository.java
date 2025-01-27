@@ -2,7 +2,6 @@ package com.example.schedulemanager.repository;
 
 import com.example.schedulemanager.dto.ScheduleResponseDto;
 import com.example.schedulemanager.entity.Schedule;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
