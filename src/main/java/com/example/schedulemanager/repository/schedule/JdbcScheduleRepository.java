@@ -34,7 +34,8 @@ public class JdbcScheduleRepository implements ScheduleRepository {
                 "password", schedule.getPassword(),
                 "contents", schedule.getContents(),
                 "createdDate", Timestamp.valueOf(schedule.getCreatedDate()),
-                "updatedDate", Timestamp.valueOf(schedule.getUpdatedDate())
+                "updatedDate", Timestamp.valueOf(schedule.getUpdatedDate()),
+                "author_id", schedule.getAuthorId()
         );
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
@@ -48,7 +49,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
     }
 
     @Override
-    public List<ScheduleResponseDto> findAllSchedule(LocalDateTime updatedDate, String username) {
+    public List<ScheduleResponseDto> findAllSchedule(LocalDateTime updatedDate, Long authorId) {
         String sql = "SELECT * FROM schedule WHERE 1=1";
         List<Object> parameters = new ArrayList<>();
 
@@ -57,9 +58,9 @@ public class JdbcScheduleRepository implements ScheduleRepository {
             sql += " AND DATE(updated_date) = ?";
             parameters.add(updatedDate);
         }
-        if (username != null && !username.isEmpty()) {
-            sql += " AND username = ?";
-            parameters.add(username);
+        if (authorId != null && authorId>0) {
+            sql += " AND author_id = ?";
+            parameters.add(authorId);
         }
 
         sql += " ORDER BY updated_date DESC";
@@ -101,6 +102,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
     private RowMapper<Schedule> scheduleRowMapper() {
         return (rs, rowNum) -> new Schedule(
                 rs.getLong("id"),
+                rs.getLong("author_id"),
                 rs.getString("username"),
                 rs.getString("password"),
                 rs.getString("contents"),

@@ -9,7 +9,7 @@ import java.util.List;
 public interface ScheduleService {
     ScheduleResponseDto saveSchedule(ScheduleRequestDto scheduleRequestDto);
 
-    List<ScheduleResponseDto> findAllSchedule(LocalDateTime updatedDate, String username);
+    List<ScheduleResponseDto> findAllSchedule(LocalDateTime updatedDate, Long authorId);
 
     ScheduleResponseDto findScheduleById(Long id);
 

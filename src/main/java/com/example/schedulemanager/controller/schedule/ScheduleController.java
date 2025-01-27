@@ -29,9 +29,9 @@ public class ScheduleController {
     @GetMapping("/find")
     public List<ScheduleResponseDto> findAllSchedule(
             @RequestParam(value = "updatedDate", required = false) String updatedStringDate,
-            @RequestParam(value = "username", required = false) String username
+            @RequestParam(value = "authorId", required = false) Long authorId
     ) {
-        return scheduleService.findAllSchedule(getLocalDateTime(updatedStringDate), username);
+        return scheduleService.findAllSchedule(getLocalDateTime(updatedStringDate), authorId);
     }
 
     @GetMapping("/{id}")
