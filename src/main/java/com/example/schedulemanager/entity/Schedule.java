@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Schedule {
     private Long id;
+    private Long authorId;
     private String username;
     private String password;
     private String contents;
