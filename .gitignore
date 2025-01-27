@@ -17,8 +17,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-application.properties
-.env
+/src/main/resources/application.properties
 
 ### IntelliJ IDEA ###
 .idea
@@ -38,4 +37,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
