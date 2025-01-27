@@ -16,11 +16,13 @@ public class Schedule {
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 
-    public Schedule(String username, String password, String contents) {
+    public Schedule(Long authorId, String username, String password, String contents) {
+        this.authorId = authorId;
         this.username = username;
         this.password = password;
         this.contents = contents;
         this.createdDate = LocalDateTime.now();
         this.updatedDate = LocalDateTime.now();
     }
+
 }
