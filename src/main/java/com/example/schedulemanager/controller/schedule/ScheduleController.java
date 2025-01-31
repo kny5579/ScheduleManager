@@ -4,6 +4,7 @@ package com.example.schedulemanager.controller.schedule;
 import com.example.schedulemanager.dto.Schedule.ScheduleRequestDto;
 import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
 import com.example.schedulemanager.service.schedule.ScheduleService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,15 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long id) {
         return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
     }
+
+    @GetMapping("/paging")
+    public ResponseEntity<Page<ScheduleResponseDto>> findSchedulesByPage(
+            @RequestParam(value = "pageNum") int pageNum,
+            @RequestParam(value = "pageSize") int pageSize
+    ){
+        return new ResponseEntity<>(scheduleService.findSchedulesByPage(pageNum,pageSize),HttpStatus.OK);
+    }
+
 
     @PatchMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto scheduleRequestDto) {
