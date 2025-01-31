@@ -26,11 +26,15 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
     @Override
     public ScheduleResponseDto saveSchedule(Schedule schedule) {
+
+        //username은 author 테이블에서 가져와서 저장
+        String findAuthorSql = "SELECT username FROM author WHERE id = ?";
+        String authorUsername = jdbcTemplate.queryForObject(findAuthorSql, String.class, schedule.getAuthorId());
+
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("schedule").usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = Map.of(
-                "username", schedule.getUsername(),
                 "password", schedule.getPassword(),
                 "contents", schedule.getContents(),
                 "createdDate", Timestamp.valueOf(schedule.getCreatedDate()),
@@ -42,15 +46,19 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
         return new ScheduleResponseDto(
                 key.longValue(),
-                schedule.getUsername(),
+                authorUsername,
                 schedule.getContents(),
                 schedule.getCreatedDate(),
-                schedule.getUpdatedDate());
+                schedule.getUpdatedDate()
+        );
     }
 
     @Override
     public List<ScheduleResponseDto> findAllSchedule(LocalDateTime updatedDate, Long authorId) {
-        String sql = "SELECT * FROM schedule WHERE 1=1";
+        String sql = "SELECT s.id, s.author_id, s.password, s.contents, s.created_date, s.updated_date, a.username " +
+                "FROM schedule s " +
+                "JOIN author a ON s.author_id = a.id " +
+                "WHERE 1=1";
         List<Object> parameters = new ArrayList<>();
 
         // 수정일, 작성자명 기준 조회 조건문
@@ -76,11 +84,25 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
     @Override
     public ScheduleResponseDto updateSchedule(Long id, String username, String contents, LocalDateTime updatedDate) {
-        String sql = "UPDATE schedule SET username = ?, contents = ?, updated_date = ? WHERE id = ?";
-        jdbcTemplate.update(sql, username, contents, Timestamp.valueOf(updatedDate), id);
-        return findScheduleById(id)
-                .map(ScheduleResponseDto::new)
-                .orElseThrow(() -> new IllegalArgumentException("id 불일치: " + id));
+        // 1. Author 테이블에서 username 업데이트
+        String authorSql = "UPDATE author SET username = ? WHERE id = (SELECT author_id FROM schedule WHERE id = ?)";
+        jdbcTemplate.update(authorSql, username, id);
+
+        String scheduleSql = "UPDATE schedule SET contents = ?, updated_date = ? WHERE id = ?";
+        jdbcTemplate.update(scheduleSql, contents, Timestamp.valueOf(updatedDate), id);
+
+        String sql = "SELECT s.id, s.author_id, s.password, s.contents, s.created_date, s.updated_date, a.username " +
+                "FROM schedule s " +
+                "JOIN author a ON s.author_id = a.id " +
+                "WHERE s.id = ?";
+
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new ScheduleResponseDto(
+                rs.getLong("id"),
+                rs.getString("username"), // Author 테이블에서 가져온 username
+                rs.getString("contents"),
+                rs.getTimestamp("created_date").toLocalDateTime(),
+                rs.getTimestamp("updated_date").toLocalDateTime()
+        ), id);
     }
 
     @Override
@@ -97,7 +119,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
     @Override
     public List<ScheduleResponseDto> findSchedulesByPage(int pageNum, int pageSize) {
-        String sql = "SELECT s.id, s.contents, s.created_date, s.updated_date, a.username AS author_name " +
+        String sql = "SELECT s.id, s.contents, s.created_date, s.updated_date, a.username " +
                 "FROM schedule s " +
                 "JOIN author a ON s.author_id = a.id " +
                 "ORDER BY s.updated_date DESC " +
@@ -108,7 +130,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         return jdbcTemplate.query(sql, new Object[]{pageSize, offset}, (rs, rowNum) -> {
             return new ScheduleResponseDto(
                     rs.getLong("id"),
-                    rs.getString("author_name"),
+                    rs.getString("username"),
                     rs.getString("contents"),
                     rs.getTimestamp("created_date").toLocalDateTime(),
                     rs.getTimestamp("updated_date").toLocalDateTime()
@@ -130,7 +152,6 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         return (rs, rowNum) -> new Schedule(
                 rs.getLong("id"),
                 rs.getLong("author_id"),
-                rs.getString("username"),
                 rs.getString("password"),
                 rs.getString("contents"),
                 rs.getTimestamp("created_date").toLocalDateTime(),
