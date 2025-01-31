@@ -30,7 +30,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         jdbcInsert.withTableName("schedule").usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = Map.of(
-                "username", schedule.getUsername(),
+                "nickname", schedule.getNickname(),
                 "password", schedule.getPassword(),
                 "contents", schedule.getContents(),
                 "createdDate", Timestamp.valueOf(schedule.getCreatedDate()),
@@ -42,7 +42,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
         return new ScheduleResponseDto(
                 key.longValue(),
-                schedule.getUsername(),
+                schedule.getNickname(),
                 schedule.getContents(),
                 schedule.getCreatedDate(),
                 schedule.getUpdatedDate());
@@ -75,9 +75,9 @@ public class JdbcScheduleRepository implements ScheduleRepository {
     }
 
     @Override
-    public ScheduleResponseDto updateSchedule(Long id, String username, String contents, LocalDateTime updatedDate) {
-        String sql = "UPDATE schedule SET username = ?, contents = ?, updated_date = ? WHERE id = ?";
-        jdbcTemplate.update(sql, username, contents, Timestamp.valueOf(updatedDate), id);
+    public ScheduleResponseDto updateSchedule(Long id, String nickname, String contents, LocalDateTime updatedDate) {
+        String sql = "UPDATE schedule SET nickname = ?, contents = ?, updated_date = ? WHERE id = ?";
+        jdbcTemplate.update(sql, nickname, contents, Timestamp.valueOf(updatedDate), id);
         return findScheduleById(id)
                 .map(ScheduleResponseDto::new)
                 .orElseThrow(() -> new IllegalArgumentException("id 불일치: " + id));
@@ -97,9 +97,8 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
     @Override
     public List<ScheduleResponseDto> findSchedulesByPage(int pageNum, int pageSize) {
-        String sql = "SELECT s.id, s.contents, s.created_date, s.updated_date, a.username AS author_name " +
+        String sql = "SELECT s.id, s.contents, s.created_date, s.updated_date, s.nickname " +
                 "FROM schedule s " +
-                "JOIN author a ON s.author_id = a.id " +
                 "ORDER BY s.updated_date DESC " +
                 "LIMIT ? OFFSET ?";
 
@@ -108,7 +107,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         return jdbcTemplate.query(sql, new Object[]{pageSize, offset}, (rs, rowNum) -> {
             return new ScheduleResponseDto(
                     rs.getLong("id"),
-                    rs.getString("author_name"),
+                    rs.getString("nickname"),
                     rs.getString("contents"),
                     rs.getTimestamp("created_date").toLocalDateTime(),
                     rs.getTimestamp("updated_date").toLocalDateTime()
@@ -119,7 +118,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
     private RowMapper<ScheduleResponseDto> scheduleResponseRowMapper() {
         return (rs, rowNum) -> new ScheduleResponseDto(
                 rs.getLong("id"),
-                rs.getString("username"),
+                rs.getString("nickname"),
                 rs.getString("contents"),
                 rs.getTimestamp("created_date").toLocalDateTime(),
                 rs.getTimestamp("updated_date").toLocalDateTime()
@@ -130,7 +129,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         return (rs, rowNum) -> new Schedule(
                 rs.getLong("id"),
                 rs.getLong("author_id"),
-                rs.getString("username"),
+                rs.getString("nickname"),
                 rs.getString("password"),
                 rs.getString("contents"),
                 rs.getTimestamp("created_date").toLocalDateTime(),

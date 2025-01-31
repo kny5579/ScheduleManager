@@ -28,7 +28,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public ScheduleResponseDto saveSchedule(ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = new Schedule(
                 scheduleRequestDto.getAuthorId(),
-                scheduleRequestDto.getUsername(),
+                scheduleRequestDto.getNickname(),
                 scheduleRequestDto.getPassword(),
                 scheduleRequestDto.getContents());
         return scheduleRepository.saveSchedule(schedule);
@@ -60,7 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalDateTime updatedDate = LocalDateTime.now();
         return scheduleRepository.updateSchedule(
                 id,
-                scheduleRequestDto.getUsername(),
+                scheduleRequestDto.getNickname(),
                 scheduleRequestDto.getContents(),
                 updatedDate);
     }

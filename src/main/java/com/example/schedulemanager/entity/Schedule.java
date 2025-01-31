@@ -10,15 +10,15 @@ import java.time.LocalDateTime;
 public class Schedule {
     private Long id;
     private Long authorId;
-    private String username;
+    private String nickname;
     private String password;
     private String contents;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
 
-    public Schedule(Long authorId, String username, String password, String contents) {
+    public Schedule(Long authorId, String nickname, String password, String contents) {
         this.authorId = authorId;
-        this.username = username;
+        this.nickname = nickname;
         this.password = password;
         this.contents = contents;
         this.createdDate = LocalDateTime.now();
