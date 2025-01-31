@@ -4,6 +4,10 @@ import com.example.schedulemanager.dto.Schedule.ScheduleRequestDto;
 import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
 import com.example.schedulemanager.entity.Schedule;
 import com.example.schedulemanager.repository.schedule.ScheduleRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,6 +44,14 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleRepository.findScheduleById(id)
                 .map(ScheduleResponseDto::new)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "id 불일치: " + id));
+    }
+
+    @Override
+    public Page<ScheduleResponseDto> findSchedulesByPage(int pageNum,int pageSize) {
+        Long totalScheduleCnt = scheduleRepository.getTotalScheduleCnt();
+        List<ScheduleResponseDto> scheduleResponseDtoList = scheduleRepository.findSchedulesByPage(pageNum,pageSize);
+        Pageable pageable = PageRequest.of(pageNum-1,pageSize);
+        return new PageImpl<>(scheduleResponseDtoList,pageable,totalScheduleCnt);
     }
 
     @Override
