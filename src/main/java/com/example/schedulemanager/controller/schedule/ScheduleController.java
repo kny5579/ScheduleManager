@@ -44,8 +44,8 @@ public class ScheduleController {
     public ResponseEntity<Page<ScheduleResponseDto>> findSchedulesByPage(
             @RequestParam(value = "pageNum") int pageNum,
             @RequestParam(value = "pageSize") int pageSize
-    ){
-        return new ResponseEntity<>(scheduleService.findSchedulesByPage(pageNum,pageSize),HttpStatus.OK);
+    ) {
+        return new ResponseEntity<>(scheduleService.findSchedulesByPage(pageNum, pageSize), HttpStatus.OK);
     }
 
 
