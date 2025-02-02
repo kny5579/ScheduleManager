@@ -4,9 +4,11 @@ package com.example.schedulemanager.controller.schedule;
 import com.example.schedulemanager.dto.Schedule.ScheduleRequestDto;
 import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
 import com.example.schedulemanager.service.schedule.ScheduleService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/schedules")
+@Validated
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
@@ -23,7 +26,7 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto) {
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@Valid @RequestBody ScheduleRequestDto scheduleRequestDto) {
         return new ResponseEntity<>(scheduleService.saveSchedule(scheduleRequestDto), HttpStatus.CREATED);
     }
 
@@ -50,12 +53,12 @@ public class ScheduleController {
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto scheduleRequestDto) {
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id, @Valid @RequestBody ScheduleRequestDto scheduleRequestDto) {
         return new ResponseEntity<>(scheduleService.updateSchedule(id, scheduleRequestDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto scheduleRequestDto) {
+    public ResponseEntity<String> deleteSchedule(@PathVariable Long id, @Valid @RequestBody ScheduleRequestDto scheduleRequestDto) {
         scheduleService.deleteSchedule(id, scheduleRequestDto);
         return new ResponseEntity<>("삭제되었습니다.", HttpStatus.OK);
     }
