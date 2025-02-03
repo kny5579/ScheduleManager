@@ -6,6 +6,7 @@ import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
 import com.example.schedulemanager.service.schedule.ScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -44,11 +45,11 @@ public class ScheduleController {
     }
 
     @GetMapping("/paging")
-    public ResponseEntity<Page<ScheduleResponseDto>> findSchedulesByPage(
+    public ResponseEntity<PagedModel<ScheduleResponseDto>> findSchedulesByPage(
             @RequestParam(value = "pageNum") int pageNum,
             @RequestParam(value = "pageSize") int pageSize
     ) {
-        return new ResponseEntity<>(scheduleService.findSchedulesByPage(pageNum, pageSize), HttpStatus.OK);
+        return ResponseEntity.ok(new PagedModel<>(scheduleService.findSchedulesByPage(pageNum, pageSize)));
     }
 
 
