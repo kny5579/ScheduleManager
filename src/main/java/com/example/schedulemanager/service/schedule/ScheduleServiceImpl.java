@@ -5,7 +5,7 @@ import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
 import com.example.schedulemanager.entity.Schedule;
 import com.example.schedulemanager.exception.CannotDeleteScheduleException;
 import com.example.schedulemanager.exception.MismatchPasswordException;
-import com.example.schedulemanager.exception.NotFoundScheduleException;
+import com.example.schedulemanager.exception.NotFoundInformationException;
 import com.example.schedulemanager.repository.schedule.ScheduleRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -44,7 +44,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public ScheduleResponseDto findScheduleById(Long id) {
         return scheduleRepository.findScheduleById(id)
                 .map(ScheduleResponseDto::new)
-                .orElseThrow(() -> new NotFoundScheduleException("id 불일치: " + id));
+                .orElseThrow(() -> new NotFoundInformationException("id 불일치: " + id));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private Schedule getScheduleById(Long id) {
         return scheduleRepository.findScheduleById(id)
-                .orElseThrow(() -> new NotFoundScheduleException("id가 올바르지 않습니다: " + id));
+                .orElseThrow(() -> new NotFoundInformationException("id가 올바르지 않습니다: " + id));
     }
 
     private void checkPasswordMatch(Schedule schedule, String password) {

@@ -23,8 +23,8 @@ public class ExceptionController {
 
     //일정 정보를 조회할 수 없는 경우 예외처리 핸들러
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(NotFoundScheduleException.class)
-    public ResponseEntity<String> handlerNotFoundScheduleException(NotFoundScheduleException e) {
+    @ExceptionHandler(NotFoundInformationException.class)
+    public ResponseEntity<String> handlerNotFoundScheduleException(NotFoundInformationException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
@@ -37,11 +37,11 @@ public class ExceptionController {
 
     //유효성 검사 실패할 경우 예외처리 핸들러
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handlerValidationException(MethodArgumentNotValidException e) {
+    public ResponseEntity<Map<String, String>> handlerValidationException(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
         for (FieldError error : e.getBindingResult().getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
         }
-        return errors;
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }

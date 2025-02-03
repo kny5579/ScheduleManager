@@ -3,10 +3,14 @@ package com.example.schedulemanager.service.author;
 import com.example.schedulemanager.dto.author.AuthorRequestDto;
 import com.example.schedulemanager.dto.author.AuthorResponseDto;
 import com.example.schedulemanager.entity.Author;
+import com.example.schedulemanager.exception.NotFoundInformationException;
 import com.example.schedulemanager.repository.author.AuthorRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -28,6 +32,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorResponseDto updateAuthor(Long id, AuthorRequestDto authorRequestDto) {
+        Optional<Author> existingAuthor = authorRepository.findAuthorById(id);
+        if (existingAuthor.isEmpty()) {
+            throw new NotFoundInformationException("id가 올바르지 않습니다: " + id);
+        }
         LocalDateTime updatedDate = LocalDateTime.now();
         return authorRepository.updateAuthor(
                 id,
