@@ -19,14 +19,14 @@
 ![img_1.png](readme_images/api.png)
 
 ## 👉🏻구현 사항
-[x] 일정 생성</br>
-[x] 일정 조회(전체 일정, 수정일, 작성자명, id 기준)</br>
-[x] 선택 일정 삭제</br>
-[x] 선택 일정 수정</br>
-[x] 작성자 테이블 설계 및 일정 테이블에 외래키 설정</br>
-[x] Page 객체를 활용한 페이지별 일정 목록 조회(페이지 번호, 페이지 크기 기준)</br>
-[x] @ExceptionHandler를 활용한 Custom Exception 생성 예외처리</br>
-[x] @Valid, @Pattern을 통해 유효성 검증</br>
+✅ 일정 생성</br>
+✅ 일정 조회(전체 일정, 수정일, 작성자명, id 기준)</br>
+✅ 선택 일정 삭제</br>
+✅ 선택 일정 수정</br>
+✅ 작성자 테이블 설계 및 일정 테이블에 외래키 설정</br>
+✅ Page 객체를 활용한 페이지별 일정 목록 조회(페이지 번호, 페이지 크기 기준)</br>
+✅ @ExceptionHandler를 활용한 Custom Exception 생성 예외처리</br>
+✅ @Valid, @Pattern을 통해 유효성 검증</br>
 
 
 ## 👉🏻 POSTMAN 확인
