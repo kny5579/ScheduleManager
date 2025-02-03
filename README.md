@@ -72,11 +72,11 @@
 <details>
   <summary><b>전체 일정 조회</b></summary>
   
-- 조건 없이 조회하는 경우
+- 조건 없이 조회하는 경우<br/>
 ![img_7.png](readme_images/img_7.png)
-- updatedDate 으로만 조회하는 경우
+- updatedDate 으로만 조회하는 경우<br/>
 ![img_5.png](readme_images/img_5.png)
-- 모든 조건으로 조회하는 경우
+- 모든 조건으로 조회하는 경우<br/>
 ![img_6.png](readme_images/img_6.png)
 </details>
 
@@ -89,13 +89,13 @@
 <details>
   <summary><b>예외 발생 시 response</b></summary>
 
-- 이메일 형식이 올바르지 않은 경우
+- 이메일 형식이 올바르지 않은 경우<br/>
 ![img_12.png](readme_images/img_12.png)
-- body에 필수 입력값을 입력하지 않은 경우
+- body에 필수 입력값을 입력하지 않은 경우<br/>
 ![img_11.png](readme_images/img_11.png)
-- 올바르지 않은 id 경로를 입력한 경우
+- 올바르지 않은 id 경로를 입력한 경우<br/>
 ![img_9.png](readme_images/img_9.png)
-- 비밀번호가 올바르지 않은 경우
+- 비밀번호가 올바르지 않은 경우<br/>
 ![img_10.png](readme_images/img_10.png)
 </details>
 <br>
