@@ -5,9 +5,7 @@ import com.example.schedulemanager.dto.author.AuthorResponseDto;
 import com.example.schedulemanager.entity.Author;
 import com.example.schedulemanager.exception.NotFoundInformationException;
 import com.example.schedulemanager.repository.author.AuthorRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
