@@ -18,8 +18,3 @@ CREATE TABLE schedule
     author_id BIGINT,
     foreign key (author_id) references author(id)
 );
-{
-    "nickname":"김윤",
-    "contents":"할일testtest",
-    "password":"password"
-}
