@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class AuthorResponseDto {
-    private Long id;
-    private String username;
-    private String email;
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
+    private final Long id;
+    private final String username;
+    private final String email;
+    private final LocalDateTime createdDate;
+    private final LocalDateTime updatedDate;
 
     public AuthorResponseDto(Author author) {
         this.id = author.getId();

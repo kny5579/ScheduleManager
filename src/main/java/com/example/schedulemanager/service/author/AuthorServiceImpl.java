@@ -5,19 +5,17 @@ import com.example.schedulemanager.dto.author.AuthorResponseDto;
 import com.example.schedulemanager.entity.Author;
 import com.example.schedulemanager.exception.NotFoundInformationException;
 import com.example.schedulemanager.repository.author.AuthorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
-
-    public AuthorServiceImpl(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
 
     @Override
     public AuthorResponseDto saveAuthor(AuthorRequestDto authorRequestDto) {

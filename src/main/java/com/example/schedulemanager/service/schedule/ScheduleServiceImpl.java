@@ -7,6 +7,7 @@ import com.example.schedulemanager.exception.CannotDeleteScheduleException;
 import com.example.schedulemanager.exception.MismatchPasswordException;
 import com.example.schedulemanager.exception.NotFoundInformationException;
 import com.example.schedulemanager.repository.schedule.ScheduleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -17,13 +18,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
-
-    public ScheduleServiceImpl(ScheduleRepository scheduleRepository) {
-        this.scheduleRepository = scheduleRepository;
-    }
 
     @Override
     public ScheduleResponseDto saveSchedule(ScheduleRequestDto scheduleRequestDto) {

@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class ScheduleResponseDto {
-    private Long id;
-    private String nickname;
-    private String contents;
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
+    private final Long id;
+    private final String nickname;
+    private final String contents;
+    private final LocalDateTime createdDate;
+    private final LocalDateTime updatedDate;
 
     public ScheduleResponseDto(Schedule schedule) {
         this.id = schedule.getId();
