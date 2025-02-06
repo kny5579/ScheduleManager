@@ -1,8 +1,8 @@
 package com.example.schedulemanager.controller.schedule;
 
 
-import com.example.schedulemanager.dto.Schedule.ScheduleRequestDto;
-import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
+import com.example.schedulemanager.dto.schedule.ScheduleRequestDto;
+import com.example.schedulemanager.dto.schedule.ScheduleResponseDto;
 import com.example.schedulemanager.service.schedule.ScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.data.web.PagedModel;

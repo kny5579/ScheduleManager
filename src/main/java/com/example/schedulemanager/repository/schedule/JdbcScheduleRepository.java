@@ -1,7 +1,8 @@
 package com.example.schedulemanager.repository.schedule;
 
-import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
+import com.example.schedulemanager.dto.schedule.ScheduleResponseDto;
 import com.example.schedulemanager.entity.Schedule;
+import com.example.schedulemanager.exception.NotFoundInformationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -45,7 +46,8 @@ public class JdbcScheduleRepository implements ScheduleRepository {
                 schedule.getNickname(),
                 schedule.getContents(),
                 schedule.getCreatedDate(),
-                schedule.getUpdatedDate());
+                schedule.getUpdatedDate()
+        );
     }
 
     @Override
@@ -80,7 +82,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         jdbcTemplate.update(sql, nickname, contents, Timestamp.valueOf(updatedDate), id);
         return findScheduleById(id)
                 .map(ScheduleResponseDto::new)
-                .orElseThrow(() -> new IllegalArgumentException("id 불일치: " + id));
+                .orElseThrow(() -> new NotFoundInformationException("id 불일치: " + id));
     }
 
     @Override
@@ -104,15 +106,13 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
         int offset = (pageNum - 1) * pageSize;
 
-        return jdbcTemplate.query(sql, new Object[]{pageSize, offset}, (rs, rowNum) -> {
-            return new ScheduleResponseDto(
-                    rs.getLong("id"),
-                    rs.getString("nickname"),
-                    rs.getString("contents"),
-                    rs.getTimestamp("created_date").toLocalDateTime(),
-                    rs.getTimestamp("updated_date").toLocalDateTime()
-            );
-        });
+        return jdbcTemplate.query(sql, new Object[]{pageSize, offset}, (rs, rowNum) -> new ScheduleResponseDto(
+                rs.getLong("id"),
+                rs.getString("nickname"),
+                rs.getString("contents"),
+                rs.getTimestamp("created_date").toLocalDateTime(),
+                rs.getTimestamp("updated_date").toLocalDateTime()
+        ));
     }
 
     private RowMapper<ScheduleResponseDto> scheduleResponseRowMapper() {

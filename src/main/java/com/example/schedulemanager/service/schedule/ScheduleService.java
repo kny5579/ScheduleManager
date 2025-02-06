@@ -1,7 +1,7 @@
 package com.example.schedulemanager.service.schedule;
 
-import com.example.schedulemanager.dto.Schedule.ScheduleRequestDto;
-import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
+import com.example.schedulemanager.dto.schedule.ScheduleRequestDto;
+import com.example.schedulemanager.dto.schedule.ScheduleResponseDto;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;

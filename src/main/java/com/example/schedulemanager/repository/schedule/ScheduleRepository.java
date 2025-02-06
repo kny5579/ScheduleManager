@@ -1,6 +1,6 @@
 package com.example.schedulemanager.repository.schedule;
 
-import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
+import com.example.schedulemanager.dto.schedule.ScheduleResponseDto;
 import com.example.schedulemanager.entity.Schedule;
 
 import java.time.LocalDateTime;

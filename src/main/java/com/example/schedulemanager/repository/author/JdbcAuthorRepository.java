@@ -2,6 +2,7 @@ package com.example.schedulemanager.repository.author;
 
 import com.example.schedulemanager.dto.author.AuthorResponseDto;
 import com.example.schedulemanager.entity.Author;
+import com.example.schedulemanager.exception.NotFoundInformationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -55,7 +56,7 @@ public class JdbcAuthorRepository implements AuthorRepository {
         jdbcTemplate.update(sql, username, email, Timestamp.valueOf(updatedDate), id);
         return findAuthorById(id)
                 .map(AuthorResponseDto::new)
-                .orElseThrow(() -> new IllegalArgumentException("id 불일치: " + id));
+                .orElseThrow(() -> new NotFoundInformationException("id 불일치: " + id));
     }
 
 

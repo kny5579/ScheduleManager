@@ -22,10 +22,10 @@ public class ExceptionController {
     }
 
     //일정 정보를 조회할 수 없는 경우 예외처리 핸들러
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundInformationException.class)
     public ResponseEntity<String> handlerNotFoundScheduleException(NotFoundInformationException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     //일정 삭제에 실패할 경우 예외처리 핸들러

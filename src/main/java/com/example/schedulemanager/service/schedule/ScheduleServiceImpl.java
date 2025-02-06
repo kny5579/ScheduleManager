@@ -1,7 +1,7 @@
 package com.example.schedulemanager.service.schedule;
 
-import com.example.schedulemanager.dto.Schedule.ScheduleRequestDto;
-import com.example.schedulemanager.dto.Schedule.ScheduleResponseDto;
+import com.example.schedulemanager.dto.schedule.ScheduleRequestDto;
+import com.example.schedulemanager.dto.schedule.ScheduleResponseDto;
 import com.example.schedulemanager.entity.Schedule;
 import com.example.schedulemanager.exception.CannotDeleteScheduleException;
 import com.example.schedulemanager.exception.MismatchPasswordException;

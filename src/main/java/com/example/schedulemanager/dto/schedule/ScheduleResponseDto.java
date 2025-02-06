@@ -1,4 +1,4 @@
-package com.example.schedulemanager.dto.Schedule;
+package com.example.schedulemanager.dto.schedule;
 
 import com.example.schedulemanager.entity.Schedule;
 import lombok.AllArgsConstructor;
